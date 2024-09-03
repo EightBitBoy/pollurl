@@ -17,3 +17,4 @@ https://github.com/EightBitBoy/pollurl
 
 ## Learning
 https://doc.rust-lang.org/rust-by-example/
+https://doc.rust-lang.org/nightly/rustc/platform-support.html
