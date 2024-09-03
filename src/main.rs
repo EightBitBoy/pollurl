@@ -6,10 +6,10 @@ fn main() {
 
   let mut curl = Easy::new();
 
-  curl.url("https://www.sfffdsdafr3wfd.org/").unwrap();
+  curl.url("https://www.google.de/").unwrap();
   curl.perform().unwrap();
 
-  let response_code = -1;
+  let mut response_code: u32 = 0;
   response_code = curl.response_code().unwrap();
 
   println!("{}", response_code);
