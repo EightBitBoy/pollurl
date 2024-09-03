@@ -1,14 +1,12 @@
 fn main() {
-    // println!("Hello, world!");
-    playground();
-    foo();
-    playground();
+  playground();
 }
 
-fn playground() {
+fn playground(){
   println!("Hello, world!");
-}
 
-fn foo() {
-  println!("Foo!");
+  let message = "Hello, world! Again!";
+  println!("{}", message);
+
+  dbg!(message);
 }
