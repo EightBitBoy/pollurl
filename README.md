@@ -11,3 +11,6 @@ A command-line tool
 
 ## Add a dependency
 * Run `cargo add DEPENDENCY`.
+
+## Learning
+https://doc.rust-lang.org/rust-by-example/
