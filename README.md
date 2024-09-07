@@ -1,7 +1,9 @@
 # waiturl
 A command-line tool to wait until a URL responds with a specific HTTP response status codes.
 
-https://github.com/EightBitBoy/pollurl
+Use it to detect website or server changes, especially during or after deployments. This is especially useful in CI/CD pipelines.
+
+[https://github.com/EightBitBoy/pollurl](https://github.com/EightBitBoy/waiturl)
 
 
 ## Environment
