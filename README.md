@@ -1,5 +1,5 @@
-# pollurl
-A command-line tool to poll URLs for HTTP response status codes.
+# waiturl
+A command-line tool to wait until a URL responds with a specific HTTP response status codes.
 
 https://github.com/EightBitBoy/pollurl
 
