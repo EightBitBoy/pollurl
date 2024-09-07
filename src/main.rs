@@ -1,5 +1,20 @@
+use clap::Parser;
 // use std::io::{stdout, Write};
 // use curl::easy::Easy;
+
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Arguments {
+  url: Option<String>,
+
+  /// Name of the person to greet
+  #[arg(short, long)]
+  name: String,
+
+  /// Number of times to greet
+  #[arg(short, long, default_value_t = 1)]
+  count: u8,
+}
 
 fn main() {
   // playground();
@@ -14,7 +29,10 @@ fn main() {
 
   // println!("{}", response_code);
 
-
+  let arguments = Arguments::parse();
+  for _ in 0..arguments.count {
+    println!("Hello {}!", arguments.name);
+  }
 }
 
 #[allow(dead_code)]
