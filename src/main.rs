@@ -2,6 +2,7 @@ use clap::Parser;
 // use std::io::{stdout, Write};
 // use curl::easy::Easy;
 
+/// waiturl: Wait for a specific HTTP response by continuously polling a URL.
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Arguments {
