@@ -1,14 +1,16 @@
 use clap::Parser;
-// use std::io::{stdout, Write};
-// use curl::easy::Easy;
 
-/// waiturl: Wait for a specific HTTP response by continuously polling a URL.
+
+/// waiturl: Wait for a specific HTTP response by continuously polling a URL
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Arguments {
-  // url: Option<String>,
   /// The URL to poll
   url: String,
+
+  /// The HTTP response status code to wait for, defaults to "200 OK"
+  #[arg(short, long, default_value_t = 200)]
+  response_code: u8,
 
   /// Timeout in seconds until the program terminates, runs infinitely otherwise
   #[arg(short, long, default_value_t = 0)]
@@ -16,10 +18,7 @@ struct Arguments {
 
   /// The interval in seconds between each poll request
   #[arg(short, long, default_value_t = 1)]
-  interval: u8,
-
-  // TODO
-  // Timeout for each request
+  interval: u8
 }
 
 fn main() {
