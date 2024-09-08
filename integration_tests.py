@@ -4,3 +4,6 @@ def test_example():
   result = shell("echo 'Hello, World!'")
   assert result.exit_code == 0
   assert "lo" in result.stdout
+
+def test_fail():
+  assert "bee" in "bean"
