@@ -5,15 +5,20 @@ use clap::Parser;
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Arguments {
-  url: Option<String>,
+  // url: Option<String>,
+  /// The URL to poll
+  url: String,
 
-  /// Name of the person to greet
-  #[arg(short, long)]
-  name: String,
+  /// Timeout in seconds until the program terminates, runs infinitely otherwise
+  #[arg(short, long, default_value_t = 0)]
+  timeout: u8,
 
-  /// Number of times to greet
+  /// The interval in seconds between each poll request
   #[arg(short, long, default_value_t = 1)]
-  count: u8,
+  interval: u8,
+
+  // TODO
+  // Timeout for each request
 }
 
 fn main() {
@@ -30,9 +35,9 @@ fn main() {
   // println!("{}", response_code);
 
   let arguments = Arguments::parse();
-  for _ in 0..arguments.count {
-    println!("Hello {}!", arguments.name);
-  }
+  println!("Hello {}!", arguments.timeout);
+  // for _ in 0..arguments.count {
+  // }
 }
 
 #[allow(dead_code)]
