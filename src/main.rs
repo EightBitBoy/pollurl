@@ -1,3 +1,6 @@
+use std::time;
+use std::thread;
+
 use clap::Parser;
 
 
@@ -16,12 +19,20 @@ struct Arguments {
   #[arg(short, long, default_value_t = 0)]
   timeout: u8,
 
-  /// The interval in seconds between each poll request
+  /// The interval in seconds between each poll request. This does not include the time for the actual request
   #[arg(short, long, default_value_t = 1)]
-  interval: u8
+  interval: u64
 }
 
 fn main() {
+  let arguments = Arguments::parse();
+  let interval_duration_seconds = time::Duration::from_secs(arguments.interval);
+
+  loop {
+    poll();
+    thread::sleep(interval_duration_seconds);
+  };
+
   // playground();
 
   // let mut curl = Easy::new();
@@ -34,10 +45,12 @@ fn main() {
 
   // println!("{}", response_code);
 
-  let arguments = Arguments::parse();
-  println!("Hello {}!", arguments.timeout);
   // for _ in 0..arguments.count {
   // }
+}
+
+fn poll() {
+  println!("Polling!");
 }
 
 #[allow(dead_code)]
