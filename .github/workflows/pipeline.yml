@@ -23,6 +23,7 @@ env:
 # https://levelup.gitconnected.com/github-actions-how-to-share-data-between-jobs-fc1547defc3e
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +35,7 @@ jobs:
           path: target/debug/waiturl
           key: latest-build
   test:
+    name: Test
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -44,18 +46,12 @@ jobs:
           path: target/debug/waiturl
           key: latest-build
       - name: Pytest
-        run: pytest -v
-
-
-      # - name: Unit tests
-      #   run: cargo test --verbose
-      # - name: Integration tests
-      #   run: |
-      #     pip install pytest
-      #     pip install cli-test-helpers
-      #     pytest -v --color=yes
-
+        run: |
+          pip install pytest
+          pip install cli-test-helpers
+          pytest -v --color=yes
   deploy:
+    name: Deploy
     needs: test
     environment:
       name: github-pages
