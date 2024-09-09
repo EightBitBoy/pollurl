@@ -41,6 +41,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/cache/restore@v4
         with:
+          path: target/debug/waiturl
           key: build-${{github.run_number}}
       - name: Pytest
         run: |
