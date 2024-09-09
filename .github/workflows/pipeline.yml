@@ -34,7 +34,7 @@ jobs:
         run: |
           pip install pytest
           pip install cli-test-helpers
-          pytest integration_tests.py --color=yes -v
+          pytest -v --color=yes
   deploy:
     needs: build
     environment:
