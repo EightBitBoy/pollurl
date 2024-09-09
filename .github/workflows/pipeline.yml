@@ -33,7 +33,7 @@ jobs:
         id: cache
         with:
           path: target/debug/waiturl
-          key: latest-build
+          key: build-${{github.run_number}}
   test:
     name: Test
     needs: build
@@ -41,10 +41,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache/restore@v4
-        id: cache
+        id: restore-cache
         with:
           path: target/debug/waiturl
-          key: latest-build
+          key: ${{github.run_number}}
       - name: Pytest
         run: |
           pip install pytest
