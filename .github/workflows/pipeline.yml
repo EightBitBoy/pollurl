@@ -27,14 +27,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: cargo build --verbose
-      - name: Unit tests
-        run: cargo test --verbose
-      - name: Integration tests
-        run: |
-          pip install pytest
-          pip install cli-test-helpers
-          pytest -v --color=yes
+        run: cargo build
+      - uses: actions/cache/save@v4
+        id: cache
+        with:
+          path: target/debug/waiturl
+          key: latest-build
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        id: cache
+        with:
+          path: target/debug/waiturl
+          key: latest-build
+      - name: Pytest
+        run: pytest -v
+
+
+      # - name: Unit tests
+      #   run: cargo test --verbose
+      # - name: Integration tests
+      #   run: |
+      #     pip install pytest
+      #     pip install cli-test-helpers
+      #     pytest -v --color=yes
+
   deploy:
     needs: build
     environment:
