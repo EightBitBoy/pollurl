@@ -45,3 +45,6 @@ https://doc.rust-lang.org/nightly/rustc/platform-support.html
 
 ## Installation resources
 * https://shellspec.info/
+
+## Pytest
+* https://github.com/pytest-dev/pytest-xdist

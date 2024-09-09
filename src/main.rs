@@ -1,7 +1,6 @@
 use std::time;
 use std::thread;
 use std::process;
-
 use clap::Parser;
 
 //TODO Create an enum of exit codes
@@ -17,7 +16,7 @@ struct Arguments {
 
   /// The HTTP response status code to wait for, defaults to "200 OK"
   #[arg(short, long, default_value_t = 200)]
-  response_code: u8,
+  response_code: u16,
 
   /// Timeout in seconds until the program terminates, runs infinitely otherwise
   #[arg(short, long, default_value_t = 0)]
@@ -31,6 +30,7 @@ struct Arguments {
 }
 
 fn main() {
+  //TODO URL validation?
   let arguments = Arguments::parse();
   let interval_duration_seconds = time::Duration::from_secs(arguments.interval);
   let start_time = time::Instant::now();
@@ -55,8 +55,44 @@ fn main() {
   // response_code = curl.response_code().unwrap();
 }
 
-fn poll(url: &String, response_code: u8) {
-  println!("{}: 404, expected {}", url, response_code);
+fn poll(url: &String, expected_response_code: u16) {
+  //TODO use same client for each request
+  // let client = reqwest::Client::new();
+
+  // let response = reqwest::blocking::get("http://httpbin.org/get")?;
+
+  // https://docs.rs/reqwest/latest/reqwest/blocking/index.html
+
+  //TODO Do not use unwrap and use Result<Response, Error>
+  // https://rust-classes.com/chapter_3_3
+  // https://doc.rust-lang.org/rust-by-example/std/result.html
+  let response: reqwest::blocking::Response = match reqwest::blocking::get(url) {
+    Ok(response) => response,
+    Err(error) => {
+      panic!("There was a problem: {:?}", error)
+    }
+  };
+  let actual_response_code: u16 = response.status().as_u16();
+
+  check_result(url, expected_response_code, actual_response_code);
+}
+
+fn check_result(url: &String, expected_response_code: u16, actual_response_code: u16){
+  if actual_response_code == expected_response_code {
+    print_result_success(url, actual_response_code);
+    process::exit(0);
+  } else {
+    print_result_fail(url, expected_response_code, actual_response_code);
+  }
+}
+
+//TODO print run time in seconds
+fn print_result_success(url: &String, actual_response_code: u16){
+  println!("{}: {} SUCCESS", url, actual_response_code);
+}
+
+fn print_result_fail(url: &String, expected_response_code: u16, actual_response_code: u16){
+  println!("{}: {}, expected {}", url, actual_response_code, expected_response_code);
 }
 
 #[allow(dead_code)]

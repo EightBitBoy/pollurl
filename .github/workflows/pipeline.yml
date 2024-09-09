@@ -18,6 +18,9 @@ concurrency:
 env:
   CARGO_TERM_COLOR: always
 
+# TODO Split build and test phases, share artifact between phases
+# https://stackoverflow.com/questions/57498605/github-actions-share-workspace-artifacts-between-jobs
+# https://levelup.gitconnected.com/github-actions-how-to-share-data-between-jobs-fc1547defc3e
 jobs:
   build:
     runs-on: ubuntu-latest

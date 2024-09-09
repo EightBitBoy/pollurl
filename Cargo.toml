@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.5.17", features = ["derive"] }
 curl = "0.4.46"
+reqwest = { version = "0.12.7", features = ["blocking"] }
