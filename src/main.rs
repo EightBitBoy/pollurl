@@ -6,6 +6,8 @@ use clap::Parser;
 //TODO Create an enum of exit codes
 //https://blog.rust-lang.org/2022/05/19/Rust-1.61.0.html
 
+// TODO Find out how to write to stdout!
+// TODO Write error messages to stderr?
 
 /// waiturl: Wait for a specific HTTP response by continuously polling a URL
 #[derive(Parser, Debug)]
@@ -29,32 +31,42 @@ struct Arguments {
   //TODO -q arg to suppress output during polling
 }
 
+// TODO https://stackoverflow.com/questions/42917566/what-is-this-question-mark-operator-about
+// TODO Use some red color for errors!
+
 fn main() {
-  //TODO URL validation?
   let arguments = Arguments::parse();
+  validate_url(&arguments.url);
+
   let interval_duration_seconds = time::Duration::from_secs(arguments.interval);
   let start_time = time::Instant::now();
 
   loop {
+    // TODO Rather return a result and process everything here, prevent deep function nesting
     poll(&arguments.url, arguments.response_code);
 
     if arguments.timeout > 0 && start_time.elapsed().as_secs() >= arguments.timeout {
-      //TODO Use some red color!
       println!("Timeout after {} seconds", arguments.timeout);
       process::exit(1);
     }
 
     thread::sleep(interval_duration_seconds);
   };
-
-  // playground();
-
-  // let mut curl = Easy::new();
-  // curl.url("https://www.google.de/").unwrap();
-  // curl.perform().unwrap();
-  // response_code = curl.response_code().unwrap();
 }
 
+// TODO This does absolutely nothing!
+// Maybe use reqwest, maybe the Client has some built-in validation
+fn validate_url(url: &String){
+  match reqwest::Url::parse(url) {
+    Ok(_url) => (),
+    Err(_error) => {
+      println!("Error: The URL cannot be parsed!");
+      process::exit(1);
+    }
+  };
+}
+
+// TODO Use different library for making requests?
 fn poll(url: &String, expected_response_code: u16) {
   //TODO use same client for each request
   // let client = reqwest::Client::new();
@@ -69,7 +81,7 @@ fn poll(url: &String, expected_response_code: u16) {
   let response: reqwest::blocking::Response = match reqwest::blocking::get(url) {
     Ok(response) => response,
     Err(error) => {
-      panic!("There was a problem: {:?}", error)
+      panic!("Error during request : {:?}", error)
     }
   };
   let actual_response_code: u16 = response.status().as_u16();

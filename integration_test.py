@@ -17,6 +17,11 @@ def test_missing_mandatory_url():
   result = run()
   assert result.exit_code == 2
 
+def test_cannot_parse_url():
+  result = run("foobar")
+  assert result.exit_code == 1
+  assert "Error: The URL cannot be parsed!" in result.stdout
+
 def test_success():
   result = run("https://httpbin.org/status/200")
   assert result.exit_code == 0
