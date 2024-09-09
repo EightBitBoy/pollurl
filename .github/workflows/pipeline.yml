@@ -40,6 +40,7 @@ jobs:
         with:
           path: target/debug/waiturl
           key: build-${{ hashFiles('src/**') }}
+          fail-on-cache-miss: true
       - name: Pytest
         run: |
           pip install pytest
