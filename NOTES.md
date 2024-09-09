@@ -48,3 +48,13 @@ https://doc.rust-lang.org/nightly/rustc/platform-support.html
 
 ## Pytest
 * https://github.com/pytest-dev/pytest-xdist
+
+
+
+# TODO Split build and test phases, share artifact between phases
+# https://stackoverflow.com/questions/57498605/github-actions-share-workspace-artifacts-between-jobs
+# https://levelup.gitconnected.com/github-actions-how-to-share-data-between-jobs-fc1547defc3e
+
+# TODO Use hash value for saving cache?
+# https://github.com/actions/cache/blob/main/save/README.md
+# https://github.com/actions/cache/blob/main/restore/README.md

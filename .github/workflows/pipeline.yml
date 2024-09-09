@@ -18,9 +18,6 @@ concurrency:
 env:
   CARGO_TERM_COLOR: always
 
-# TODO Split build and test phases, share artifact between phases
-# https://stackoverflow.com/questions/57498605/github-actions-share-workspace-artifacts-between-jobs
-# https://levelup.gitconnected.com/github-actions-how-to-share-data-between-jobs-fc1547defc3e
 jobs:
   build:
     name: Build
@@ -32,7 +29,7 @@ jobs:
       - uses: actions/cache/save@v4
         with:
           path: target/debug/waiturl
-          key: build-${{github.run_number}}
+          key: build-${{ hashFiles('src/**') }}
   test:
     name: Test
     needs: build
@@ -42,7 +39,7 @@ jobs:
       - uses: actions/cache/restore@v4
         with:
           path: target/debug/waiturl
-          key: build-${{github.run_number}}
+          key: build-${{ hashFiles('src/**') }}
       - name: Pytest
         run: |
           pip install pytest
