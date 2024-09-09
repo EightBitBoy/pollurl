@@ -1,6 +1,10 @@
 from cli_test_helpers import shell
 
 
+# https://github.com/alexliesenfeld/httpmock
+# parallel execution of tests!
+
+
 BINARY_PATH = "target/debug/waiturl"
 
 
@@ -27,5 +31,9 @@ def test_success():
   assert result.exit_code == 0
   assert "SUCCESS" in result.stdout
 
-# def test_invalid_url
+def test_timeout_three_seconds():
+  result = run("https://httpbin.org/status/404 -t 3")
+  assert result.exit_code == 1
+  assert "Timeout after 3 seconds!" in result.stdout
+
 # def test_failed to lookup address information: Name or service not known

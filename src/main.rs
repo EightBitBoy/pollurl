@@ -46,7 +46,7 @@ fn main() {
     poll(&arguments.url, arguments.response_code);
 
     if arguments.timeout > 0 && start_time.elapsed().as_secs() >= arguments.timeout {
-      println!("Timeout after {} seconds", arguments.timeout);
+      println!("Timeout after {} seconds!", arguments.timeout);
       process::exit(1);
     }
 
