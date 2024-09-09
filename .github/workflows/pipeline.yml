@@ -34,6 +34,7 @@ jobs:
           path: target/debug/waiturl
           key: latest-build
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,7 +56,7 @@ jobs:
       #     pytest -v --color=yes
 
   deploy:
-    needs: build
+    needs: test
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
