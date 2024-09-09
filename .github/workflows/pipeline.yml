@@ -30,7 +30,6 @@ jobs:
       - name: Build
         run: cargo build
       - uses: actions/cache/save@v4
-        id: cache
         with:
           path: target/debug/waiturl
           key: build-${{github.run_number}}
@@ -41,10 +40,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache/restore@v4
-        id: restore-cache
         with:
-          path: target/debug/waiturl
-          key: ${{github.run_number}}
+          key: build-${{github.run_number}}
       - name: Pytest
         run: |
           pip install pytest
