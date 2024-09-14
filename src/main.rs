@@ -3,6 +3,8 @@ use std::thread;
 use std::process;
 use clap::Parser;
 
+//TODO: https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch09-02-recoverable-errors-with-result.html
+
 //TODO Create an enum of exit codes
 //https://blog.rust-lang.org/2022/05/19/Rust-1.61.0.html
 
@@ -26,9 +28,11 @@ struct Arguments {
 
   /// The interval in seconds between each poll request. This does not include the time for the actual request
   #[arg(short, long, default_value_t = 1)]
-  interval: u64
+  interval: u64,
 
-  //TODO -q arg to suppress output during polling
+  /// Suppress any output. The program's success is returned as exit code "0", other values indicate timeouts or errors
+  #[arg(short, long, default_value_t = false)]
+  quiet: bool
 }
 
 // TODO https://stackoverflow.com/questions/42917566/what-is-this-question-mark-operator-about
@@ -43,7 +47,7 @@ fn main() {
 
   loop {
     // TODO Rather return a result and process everything here, prevent deep function nesting
-    poll(&arguments.url, arguments.response_code);
+    poll(&arguments.url, arguments.response_code, arguments.quiet);
 
     if arguments.timeout > 0 && start_time.elapsed().as_secs() >= arguments.timeout {
       println!("Timeout after {} seconds!", arguments.timeout);
@@ -67,7 +71,7 @@ fn validate_url(url: &String){
 }
 
 // TODO Use different library for making requests?
-fn poll(url: &String, expected_response_code: u16) {
+fn poll(url: &String, expected_response_code: u16, is_quiet: bool) {
   //TODO use same client for each request
   // let client = reqwest::Client::new();
 
@@ -86,25 +90,33 @@ fn poll(url: &String, expected_response_code: u16) {
   };
   let actual_response_code: u16 = response.status().as_u16();
 
-  check_result(url, expected_response_code, actual_response_code);
+  check_result(url, expected_response_code, actual_response_code, is_quiet);
 }
 
-fn check_result(url: &String, expected_response_code: u16, actual_response_code: u16){
+fn check_result(url: &String, expected_response_code: u16, actual_response_code: u16, is_quiet: bool) {
   if actual_response_code == expected_response_code {
-    print_result_success(url, actual_response_code);
+    print_result_success(url, actual_response_code, is_quiet);
     process::exit(0);
   } else {
-    print_result_fail(url, expected_response_code, actual_response_code);
+    print_result_fail(url, expected_response_code, actual_response_code, is_quiet);
   }
 }
 
-//TODO print run time in seconds
-fn print_result_success(url: &String, actual_response_code: u16){
-  println!("{}: {} SUCCESS", url, actual_response_code);
+fn print_result_success(url: &String, actual_response_code: u16, is_quiet: bool) {
+  if !is_quiet {
+    //TODO print run time in seconds
+    println!("{}: {} SUCCESS", url, actual_response_code);
+  }
 }
 
-fn print_result_fail(url: &String, expected_response_code: u16, actual_response_code: u16){
-  println!("{}: {}, expected {}", url, actual_response_code, expected_response_code);
+fn print_result_timeout() {
+  unimplemented!()
+}
+
+fn print_result_fail(url: &String, expected_response_code: u16, actual_response_code: u16, is_quiet: bool) {
+  if !is_quiet {
+    println!("{}: {}, expected {}", url, actual_response_code, expected_response_code);
+  }
 }
 
 #[allow(dead_code)]

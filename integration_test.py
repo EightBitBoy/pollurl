@@ -4,6 +4,8 @@ from cli_test_helpers import shell
 # https://github.com/alexliesenfeld/httpmock
 # parallel execution of tests!
 
+# TODO Test quiet results
+
 
 BINARY_PATH = "target/debug/waiturl"
 
