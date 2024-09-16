@@ -45,6 +45,7 @@ https://doc.rust-lang.org/nightly/rustc/platform-support.html
 
 ## Installation resources
 * https://shellspec.info/
+* https://github.com/Wowu/docker-rollout
 
 ## Pytest
 * https://github.com/pytest-dev/pytest-xdist

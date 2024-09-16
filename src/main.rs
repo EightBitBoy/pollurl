@@ -3,6 +3,8 @@ use std::thread;
 use std::process;
 use clap::Parser;
 
+//TODO: Use stderr for printing errors
+
 //TODO: https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch09-02-recoverable-errors-with-result.html
 
 //TODO Create an enum of exit codes
@@ -64,6 +66,7 @@ fn validate_url(url: &String){
   match reqwest::Url::parse(url) {
     Ok(_url) => (),
     Err(_error) => {
+      // TODO Use stderr
       println!("Error: The URL cannot be parsed!");
       process::exit(1);
     }
